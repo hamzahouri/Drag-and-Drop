@@ -36,6 +36,8 @@ function getSavedColumns() {
   }
 }
 
+getSavedColumns();
+updateSavedColumns();
 // Set localStorage Arrays
 function updateSavedColumns() {
   localStorage.setItem('backlogItems', JSON.stringify(backlogListArray));

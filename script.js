@@ -107,12 +107,35 @@ function updateDOM() {
   });
 
   // Run getSavedColumns only once, Update Local Storage
+  updatedOnLoad = true;
+  updateSavedColumns();
 }
+
+//Allows arrays to reflect darg and drop item
+function rebuildArrays() {
+  backlogListArray = [];
+  for(let i =0; i < backlogList.children.length; i++) {
+    backlogListArray.push(backlogList.children[i].textContent);
+  }
+  progressListArray = [];
+  for(let i = 0; i < progressList.children.length; i++) {
+    progressListArray.push(progressList.children[i].textContent);
+  }
+  completeListArray = [];
+  for(let i = 0; i < completeList.children.length; i++) {
+    completeListArray.push(backlogList.children[i].textContent);
+  }
+  onHoldListArray = [];
+  for(let i = 0; i < onHoldList.children.length; i++) {
+    onHoldListArray.push(backlogList.children[i].textContent);
+  }
+  updateDOM();
+}
+
 
 //When item start dragging
 function drag(e) {
   draggedItem = e.target;
-  console.log('this is', draggedItem );
 }
 
 // Column allows for Item to Drop
@@ -120,7 +143,7 @@ function allowDrop(e) {
   e.preventDefault();
 }
 
-// When Item enter Column Area
+// When Item enter Column Area add css class
 function dragEnter (column) {
   listColumns[column].classList.add('over');
   currentColumn = column;
@@ -130,15 +153,16 @@ function dragEnter (column) {
 //Dropping item in colomun
 function drop(e) {
   e.preventDefault();
+
   // Remove Backround color/padding
   listColumns.forEach((column) => {
     column.classList.remove('over');
   });
+
   //Add item to column
   const parent = listColumns[currentColumn];
   parent.appendChild(draggedItem);
-
-
+  rebuildArrays();
 }
 
 //on load
